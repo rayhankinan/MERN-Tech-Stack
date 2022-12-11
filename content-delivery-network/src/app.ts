@@ -22,7 +22,7 @@ export class App {
 
     async run() {
         await mongoose.connect(
-            `mongodb://${dataConfig.host}:${dataConfig.port}/${dataConfig.database}`
+            `mongodb://${dataConfig.username}:${dataConfig.password}@${dataConfig.host}:${dataConfig.port}/${dataConfig.database}`
         );
 
         const httpServer = http.createServer(this.app);

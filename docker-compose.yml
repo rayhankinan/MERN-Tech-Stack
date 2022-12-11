@@ -9,6 +9,8 @@ services:
     restart: always
     environment:
       PORT: ${BACKEND_PORT}
+      MONGO_USERNAME: ${MONGO_INITDB_USERNAME}
+      MONGO_PASSWORD: ${MONGO_INITDB_PASSWORD}
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
@@ -35,6 +37,8 @@ services:
     restart: always
     environment:
       PORT: ${CDN_PORT}
+      MONGO_USERNAME: ${MONGO_INITDB_USERNAME}
+      MONGO_PASSWORD: ${MONGO_INITDB_PASSWORD}
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
@@ -73,12 +77,13 @@ services:
     container_name: mern-db
     restart: always
     environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     hostname: mern-db-service
     volumes:
       - db:/data/db
+      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - app-network
 

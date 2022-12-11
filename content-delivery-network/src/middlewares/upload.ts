@@ -9,10 +9,9 @@ import { AuthRequest } from "./auth";
 export class UploadMiddleware {
     upload(filename: string) {
         const storage = new GridFsStorage({
-            url: `mongodb://${dataConfig.host}:${dataConfig.port}/${dataConfig.database}`,
+            url: `mongodb://${dataConfig.username}:${dataConfig.password}@${dataConfig.host}:${dataConfig.port}/${dataConfig.database}`,
             file: (req: Request, file: Express.Multer.File) => {
                 return new Promise((resolve, reject) => {
-                    // TODO: cek nilai token pada req
                     const { token } = req as AuthRequest;
                     if (!token) {
                         reject(new Error("Unauthorized!"));
