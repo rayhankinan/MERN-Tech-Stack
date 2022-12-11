@@ -79,7 +79,7 @@ services:
 
   # Elasticsearch Service
   search:
-    image: elasticsearch:latest
+    image: elasticsearch:8.5.2
     container_name: mern-search
     restart: always
     environment:
@@ -90,7 +90,7 @@ services:
       - app-network
 
   search-manager:
-    image: kibana:latest
+    image: kibana:8.5.2
     container_name: mern-search-manager
     restart: always
     environment:
@@ -102,6 +102,15 @@ services:
     depends_on:
       - search
 
+  logstash:
+    image: logstash:8.5.2
+    container_name: mern-logstash
+    restart: always
+    networks:
+      - app-network
+    depends_on:
+      - search
+      - db
 
 # Docker Networks
 networks:
