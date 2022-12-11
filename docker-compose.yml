@@ -9,12 +9,12 @@ services:
     restart: always
     environment:
       PORT: ${BACKEND_PORT}
-      MONGO_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
+      MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       ELASTIC_PORT: ${ELASTIC_PORT}
+    hostname: mern-backend-app-service
     volumes:
       - ./Server-Side-MERN-Tech-Stack:/app
       - /app/node_modules
@@ -33,6 +33,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    hostname: mern-server-service
     volumes:
       - ./Server-Side-MERN-Tech-Stack:/app
       - /app/node_modules
@@ -49,30 +50,35 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    hostname: mern-db-service
     volumes:
       - db:/data/db
     networks:
       - app-network
 
-  # db-manager:
-  #   image: mongo-express:latest
-  #   container_name: mern-db-manager
-  #   restart: always
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-  #   ports:
-  #     - "8081:8081"
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     - db
+  db-manager:
+    image: mongo-express:latest
+    container_name: mern-db-manager
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: ${MONGO_HOST}
+      ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
+    ports:
+      - "8081:8081"
+    hostname: mern-db-manager-service
+    networks:
+      - app-network
+    depends_on:
+      - db
 
   # Redis Service
   cache:
     image: redis:latest
     container_name: mern-cache
     restart: always
+    hostname: mern-cache-service
     volumes:
       - cache:/data
     networks:
