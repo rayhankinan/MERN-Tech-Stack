@@ -1,2 +1,2 @@
 MERN-Tech-Stack
-Personal Website Page using MERN (MongoDB, Express.js, React.js, Node.js) Tech Stack
+Community Forum Website using MERN (MongoDB, Express.js, React.js, Node.js) Tech Stack
