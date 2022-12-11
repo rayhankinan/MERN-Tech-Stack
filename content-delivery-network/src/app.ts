@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import mongoose from "mongoose";
 import http from "http";
 
+import { ContentRoute } from "./routes/content";
 import { serverConfig } from "./config/server";
 import { dataConfig } from "./config/data";
 
@@ -9,7 +10,14 @@ export class App {
     app: Express;
 
     constructor() {
+        const contentRoute = new ContentRoute();
+
         this.app = express();
+        this.app.use(
+            express.json(),
+            express.urlencoded({ extended: true }),
+            contentRoute.getRoute()
+        );
     }
 
     async run() {

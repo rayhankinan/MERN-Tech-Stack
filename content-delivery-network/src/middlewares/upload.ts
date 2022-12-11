@@ -40,6 +40,6 @@ export class UploadMiddleware {
 
         const upload = multer({ storage });
 
-        return upload.single(filename);
+        return upload.array(filename);
     }
 }
