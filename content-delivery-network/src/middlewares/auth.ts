@@ -19,6 +19,7 @@ export class AuthMiddleware {
                 const token = req
                     .header("Authorization")
                     .replace("Bearer ", "");
+
                 if (!token) {
                     res.status(StatusCodes.UNAUTHORIZED).send(
                         ReasonPhrases.UNAUTHORIZED

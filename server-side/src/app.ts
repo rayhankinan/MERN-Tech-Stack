@@ -4,7 +4,6 @@ import express, { Express } from "express";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import http from "http";
-
 import "reflect-metadata";
 
 import { serverConfig } from "./config/server";
