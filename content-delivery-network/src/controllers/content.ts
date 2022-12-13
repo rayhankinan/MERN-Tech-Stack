@@ -17,7 +17,9 @@ export class ContentController {
 
             const files = await bucket.find({ filename }).toArray();
             if (files.length === 0) {
-                res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
+                res.status(StatusCodes.NOT_FOUND).json({
+                    message: ReasonPhrases.NOT_FOUND,
+                });
                 return;
             }
 
@@ -30,13 +32,22 @@ export class ContentController {
         return async (req: Request, res: Response) => {
             const { token } = req as AuthRequest;
             if (!token) {
-                res.status(StatusCodes.UNAUTHORIZED).send(
-                    ReasonPhrases.UNAUTHORIZED
-                );
+                res.status(StatusCodes.UNAUTHORIZED).json({
+                    message: ReasonPhrases.UNAUTHORIZED,
+                });
                 return;
             }
 
-            res.status(StatusCodes.CREATED).send(ReasonPhrases.CREATED);
+            const { filename, destination } = req.file;
+            const fileInfo = {
+                filename,
+                destination,
+            };
+
+            res.status(StatusCodes.CREATED).json({
+                message: ReasonPhrases.CREATED,
+                data: fileInfo,
+            });
         };
     }
 }

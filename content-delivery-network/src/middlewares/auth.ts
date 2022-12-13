@@ -21,9 +21,9 @@ export class AuthMiddleware {
                     .replace("Bearer ", "");
 
                 if (!token) {
-                    res.status(StatusCodes.UNAUTHORIZED).send(
-                        ReasonPhrases.UNAUTHORIZED
-                    );
+                    res.status(StatusCodes.UNAUTHORIZED).json({
+                        message: ReasonPhrases.UNAUTHORIZED,
+                    });
                     return;
                 }
 
@@ -34,9 +34,9 @@ export class AuthMiddleware {
 
                 next();
             } catch (error) {
-                res.status(StatusCodes.UNAUTHORIZED).send(
-                    ReasonPhrases.UNAUTHORIZED
-                );
+                res.status(StatusCodes.UNAUTHORIZED).json({
+                    message: ReasonPhrases.UNAUTHORIZED,
+                });
             }
         };
     }
