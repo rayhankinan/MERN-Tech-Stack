@@ -23,6 +23,11 @@ export class ContentRoute {
                 this.authMiddleware.authenticate(),
                 this.uploadMiddleware.upload("file"),
                 this.contentController.upload()
+            )
+            .delete(
+                "/:filename",
+                this.authMiddleware.authenticate(),
+                this.contentController.remove()
             );
     }
 }
