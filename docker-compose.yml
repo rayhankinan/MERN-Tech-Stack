@@ -14,6 +14,7 @@ services:
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       ELASTIC_PORT: ${ELASTIC_PORT}
       JWT_SECRET: ${JWT_SECRET}
@@ -26,7 +27,7 @@ services:
     depends_on:
       - db
       - cache
-      # - search
+      - search
 
   # CDN Service
   cdn-app:
@@ -119,27 +120,24 @@ services:
       - app-network
 
   # Elasticsearch Service
-  # search:
-  #   image: elasticsearch:8.5.2
-  #   container_name: mern-search
-  #   restart: always
-  #   environment:
-  #     discovery.type: single-node
-  #     ES_JAVA_OPTS: -Xms1g -Xmx1g
-  #     ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-  #   volumes:
-  #     - search:/usr/share/elasticsearch/data
-  #   networks:
-  #     - app-network
+  search:
+    image: elasticsearch:8.5.2
+    container_name: mern-search
+    restart: always
+    hostname: mern-search-service
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      xpack.security.enabled: false
+    volumes:
+      - search:/usr/share/elasticsearch/data
+    networks:
+      - app-network
 
   # search-manager:
   #   image: kibana:8.5.2
   #   container_name: mern-search-manager
   #   restart: always
-  #   environment:
-  #     KIBANA_PASSWORD: ${ELASTIC_PASSWORD}
-  #   ports:
-  #     - "5601:5601"
+  #   hostname: mern-search-manager-service
   #   networks:
   #     - app-network
   #   depends_on:
@@ -149,6 +147,13 @@ services:
   #   image: logstash:8.5.2
   #   container_name: mern-logstash
   #   restart: always
+  #   hostname: mern-logstash-service
+  #   command: bash -c "cd /usr/share/logstash && bin/logstash-plugin install logstash-input-mongodb"
+  #   environment:
+  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+  #     xpack.monitoring.elasticsearch.url: "$ELASTIC_HOST:$ELASTIC_PORT"
+  #   volumes:
+  #     - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
   #   networks:
   #     - app-network
   #   depends_on:
