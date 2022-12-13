@@ -7,7 +7,6 @@ import {
     IsEmail,
     IsPhoneNumber,
     IsStrongPassword,
-    IsUrl,
     MaxLength,
 } from "class-validator";
 
@@ -41,11 +40,11 @@ export class User {
     @Property({ required: true })
     password: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     description: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Property()
     linkToProfile: string;
 }
@@ -93,7 +92,6 @@ export class UserInput implements Partial<User> {
     description: string;
 
     @Field()
-    @IsUrl()
     linkToProfile: string;
 }
 
