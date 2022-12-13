@@ -7,8 +7,11 @@ import {
     IsEmail,
     IsPhoneNumber,
     IsStrongPassword,
+    Length,
     MaxLength,
 } from "class-validator";
+
+import { Image } from "./image";
 
 @ObjectType()
 export class User {
@@ -45,14 +48,14 @@ export class User {
     description: string;
 
     @Field({ nullable: true })
-    @Property()
-    linkToProfile: string;
+    @Property({ ref: () => Image })
+    linkToProfile: Image;
 }
 
 @InputType()
 export class UserInput implements Partial<User> {
     @Field()
-    @MaxLength(255)
+    @Length(1, 255)
     @IsAlphanumeric()
     username: string;
 
@@ -65,12 +68,12 @@ export class UserInput implements Partial<User> {
     phoneNumber: string;
 
     @Field()
-    @MaxLength(255)
+    @Length(1, 255)
     @IsAlpha()
     firstName: string;
 
     @Field()
-    @MaxLength(255)
+    @Length(1, 255)
     @IsAlpha()
     lastName: string;
 
@@ -89,10 +92,11 @@ export class UserInput implements Partial<User> {
     password: string;
 
     @Field()
+    @MaxLength(255)
     description: string;
 
     @Field()
-    linkToProfile: string;
+    linkToProfile: Image;
 }
 
 export const UserModel = getModelForClass(User);

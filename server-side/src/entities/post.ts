@@ -1,8 +1,9 @@
 import { prop as Property, getModelForClass } from "@typegoose/typegoose";
 import { Field, ObjectType, InputType } from "type-graphql";
-import { MaxLength } from "class-validator";
+import { Length } from "class-validator";
 
 import { Community } from "./community";
+import { Image } from "./image";
 import { User } from "./user";
 
 @ObjectType()
@@ -16,8 +17,8 @@ export class Post {
     content: string;
 
     @Field()
-    @Property({ required: true, default: [] })
-    listOfImage: [string];
+    @Property({ required: true, ref: () => Image, default: [] })
+    listOfImage: [Image];
 
     @Field()
     @Property({ required: true, ref: () => User })
@@ -35,15 +36,15 @@ export class Post {
 @InputType()
 export class PostInput implements Partial<PostInput> {
     @Field()
-    @MaxLength(255)
+    @Length(1, 255)
     title: string;
 
     @Field()
-    @MaxLength(255)
+    @Length(1, 255)
     content: string;
 
     @Field()
-    listOfImage: [string];
+    listOfImage: [Image];
 
     @Field()
     uploader: User;
