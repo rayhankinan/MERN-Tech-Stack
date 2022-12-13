@@ -64,8 +64,8 @@ services:
     hostname: mern-server-service
     volumes:
       - ./server-side:/app
-      - /app/node_modules
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - /app/node_modules
     networks:
       - app-network
     depends_on:
@@ -96,7 +96,12 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: ${MONGO_HOST}
       ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
+      ME_CONFIG_SITE_BASEURL: ${ME_CONFIG_SITE_BASEURL}
     hostname: mern-db-manager-service
+    volumes:
+      - ./mongo-express/config.js:/usr/lib/node_modules/mongo-express/config.js
     networks:
       - app-network
     depends_on:
