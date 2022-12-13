@@ -1,4 +1,4 @@
-import { prop as Property, getModelForClass } from "@typegoose/typegoose";
+import { prop as Property, getModelForClass, Ref } from "@typegoose/typegoose";
 import { Field, ObjectType, InputType } from "type-graphql";
 import { Length } from "class-validator";
 
@@ -18,19 +18,19 @@ export class Post {
 
     @Field()
     @Property({ required: true, ref: () => Image, default: [] })
-    listOfImage: [Image];
+    listOfImage: Ref<Image>[];
 
     @Field()
     @Property({ required: true, ref: () => User })
-    uploader: User;
+    uploader: Ref<User>;
 
     @Field({ nullable: true })
     @Property({ ref: () => Post })
-    replied: Post;
+    replied: Ref<Post>;
 
     @Field({ nullable: true })
     @Property({ ref: () => Community })
-    topic: Community;
+    topic: Ref<Community>;
 }
 
 @InputType()
@@ -44,7 +44,7 @@ export class PostInput implements Partial<PostInput> {
     content: string;
 
     @Field()
-    listOfImage: [Image];
+    listOfImage: Image[];
 
     @Field()
     uploader: User;

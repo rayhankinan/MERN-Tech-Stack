@@ -1,4 +1,4 @@
-import { prop as Property, getModelForClass } from "@typegoose/typegoose";
+import { prop as Property, getModelForClass, Ref } from "@typegoose/typegoose";
 import { Field, ObjectType, InputType } from "type-graphql";
 import {
     IsAlpha,
@@ -49,7 +49,7 @@ export class User {
 
     @Field({ nullable: true })
     @Property({ ref: () => Image })
-    linkToProfile: Image;
+    linkToProfile: Ref<Image>;
 }
 
 @InputType()
