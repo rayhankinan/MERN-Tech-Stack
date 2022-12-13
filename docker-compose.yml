@@ -96,8 +96,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: ${MONGO_HOST}
       ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
-    ports:
-      - "8081:8081"
     hostname: mern-db-manager-service
     networks:
       - app-network
