@@ -38,10 +38,11 @@ export class ContentController {
                 return;
             }
 
-            const { filename, destination } = req.file;
+            const { filename, destination, mimetype } = req.file;
             const fileInfo = {
                 filename,
                 destination,
+                mimetype,
             };
 
             res.status(StatusCodes.CREATED).json({

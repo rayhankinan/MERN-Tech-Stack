@@ -1,6 +1,6 @@
 import { prop as Property, getModelForClass, Ref } from "@typegoose/typegoose";
 import { Field, ObjectType, InputType } from "type-graphql";
-import { Length } from "class-validator";
+import { IsInstance, Length } from "class-validator";
 
 import { User } from "./user";
 import { Image } from "./image";
@@ -27,17 +27,20 @@ export class Message {
 @InputType()
 export class MessageInput implements Partial<Message> {
     @Field()
-    sender: User;
+    @IsInstance(User)
+    sender?: User;
 
     @Field()
-    receiver: User;
+    @IsInstance(User)
+    receiver?: User;
 
     @Field()
     @Length(1, 255)
-    content: string;
+    content?: string;
 
     @Field()
-    listOfImage: Image[];
+    @IsInstance(Array<Image>)
+    listOfImage?: Image[];
 }
 
 export const MessageModel = getModelForClass(Message);

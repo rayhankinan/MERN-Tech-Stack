@@ -5,6 +5,7 @@ import {
     IsAlphanumeric,
     IsDate,
     IsEmail,
+    IsInstance,
     IsPhoneNumber,
     IsStrongPassword,
     Length,
@@ -49,7 +50,7 @@ export class User {
 
     @Field({ nullable: true })
     @Property({ ref: () => Image })
-    linkToProfile: Ref<Image>;
+    profile: Ref<Image>;
 }
 
 @InputType()
@@ -57,29 +58,29 @@ export class UserInput implements Partial<User> {
     @Field()
     @Length(1, 255)
     @IsAlphanumeric()
-    username: string;
+    username?: string;
 
     @Field()
     @IsEmail()
-    email: string;
+    email?: string;
 
     @Field()
     @IsPhoneNumber()
-    phoneNumber: string;
+    phoneNumber?: string;
 
     @Field()
     @Length(1, 255)
     @IsAlpha()
-    firstName: string;
+    firstName?: string;
 
     @Field()
     @Length(1, 255)
     @IsAlpha()
-    lastName: string;
+    lastName?: string;
 
     @Field()
     @IsDate()
-    dateOfBirth: Date;
+    dateOfBirth?: Date;
 
     @Field()
     @IsStrongPassword({
@@ -89,14 +90,15 @@ export class UserInput implements Partial<User> {
         minNumbers: 1,
         minSymbols: 1,
     })
-    password: string;
+    password?: string;
 
     @Field()
     @MaxLength(255)
-    description: string;
+    description?: string;
 
     @Field()
-    linkToProfile: Image;
+    @IsInstance(Image)
+    profile?: Image;
 }
 
 export const UserModel = getModelForClass(User);

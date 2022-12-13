@@ -1,6 +1,6 @@
 import { prop as Property, getModelForClass, Ref } from "@typegoose/typegoose";
 import { Field, ObjectType, InputType } from "type-graphql";
-import { Length } from "class-validator";
+import { IsInstance, Length } from "class-validator";
 
 import { Community } from "./community";
 import { Image } from "./image";
@@ -37,23 +37,27 @@ export class Post {
 export class PostInput implements Partial<PostInput> {
     @Field()
     @Length(1, 255)
-    title: string;
+    title?: string;
 
     @Field()
     @Length(1, 255)
-    content: string;
+    content?: string;
 
     @Field()
-    listOfImage: Image[];
+    @IsInstance(Array<Image>)
+    listOfImage?: Image[];
 
     @Field()
-    uploader: User;
+    @IsInstance(User)
+    uploader?: User;
 
     @Field()
-    replied: Post;
+    @IsInstance(Post)
+    replied?: Post;
 
     @Field()
-    topic: Community;
+    @IsInstance(Community)
+    topic?: Community;
 }
 
 export const PostModel = getModelForClass(Post);
