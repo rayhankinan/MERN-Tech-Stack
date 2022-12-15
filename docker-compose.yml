@@ -84,7 +84,7 @@ services:
     hostname: mern-db-service
     volumes:
       - db:/data/db
-      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./mongo/settings/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
       - app-network
 
@@ -102,7 +102,7 @@ services:
       ME_CONFIG_SITE_BASEURL: ${ME_CONFIG_SITE_BASEURL}
     hostname: mern-db-manager-service
     volumes:
-      - ./mongo-express/config.js:/usr/lib/node_modules/mongo-express/config.js
+      - ./mongo-express/settings/config.js:/usr/lib/node_modules/mongo-express/config.js
     networks:
       - app-network
     depends_on:
@@ -140,27 +140,28 @@ services:
     restart: always
     hostname: mern-search-manager-service
     volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kibana/settings/kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
       - app-network
     depends_on:
       - search
 
-  # logstash:
-  #   image: logstash:8.5.2
-  #   container_name: mern-logstash
-  #   restart: always
-  #   hostname: mern-logstash-service
-  #   command: bash -c "bin/logstash-plugin install logstash-input-mongodb && bin/logstash -f /etc/logstash/conf.d/logstash.conf"
-  #   environment:
-  #     LS_JAVA_OPTS: "-Xmx1g -Xms1g"
-  #   volumes:
-  #     - ./logstash/conf.d/logstash.conf:/etc/logstash/conf.d/logstash.conf
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     - search
-  #     - db
+  logstash:
+    image: logstash:8.5.2
+    container_name: mern-logstash
+    restart: always
+    hostname: mern-logstash-service
+    command: bash -c "bin/logstash-plugin install logstash-input-mongodb && bin/logstash -f /etc/logstash/conf.d/pipeline.conf"
+    environment:
+      LS_JAVA_OPTS: "-Xmx1g -Xms1g"
+    volumes:
+      - ./logstash/conf.d/pipeline.conf:/etc/logstash/conf.d/pipeline.conf
+      - ./logstash/settings/logstash.yml:/usr/share/logstash/config/logstash.yml
+    networks:
+      - app-network
+    depends_on:
+      - search
+      - db
 
 # Docker Networks
 networks:
