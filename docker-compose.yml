@@ -69,8 +69,6 @@ services:
       - /app/node_modules
     networks:
       - app-network
-    depends_on:
-      - backend-app
 
   # MongoDB Service
   db:
@@ -81,6 +79,8 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_USERNAME: ${MONGO_INITDB_USERNAME}
+      MONGO_INITDB_PASSWORD: ${MONGO_INITDB_PASSWORD}
     hostname: mern-db-service
     volumes:
       - db:/data/db
