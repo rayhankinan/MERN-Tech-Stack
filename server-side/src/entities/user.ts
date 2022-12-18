@@ -12,6 +12,7 @@ import {
     MaxLength,
 } from "class-validator";
 
+import { Role } from "../enum/roles";
 import { Image } from "./image";
 
 @ObjectType()
@@ -43,6 +44,10 @@ export class User {
     @Field()
     @Property({ required: true })
     password: string;
+
+    @Field()
+    @Property({ required: true })
+    role: Role;
 
     @Field({ nullable: true })
     @Property()
@@ -91,6 +96,10 @@ export class UserInput implements Partial<User> {
         minSymbols: 1,
     })
     password?: string;
+
+    @Field()
+    @IsInstance(Role)
+    role?: Role;
 
     @Field()
     @MaxLength(255)
