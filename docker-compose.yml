@@ -14,10 +14,11 @@ services:
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
-      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      ELASTIC_HOST: ${ELASTIC_HOST}
       ELASTIC_PORT: ${ELASTIC_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
     hostname: mern-backend-app-service
     volumes:
       - ./server-side:/app
@@ -44,6 +45,8 @@ services:
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DATABASE: ${MONGO_INITDB_DATABASE}
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
     hostname: mern-cdn-app-service
     volumes:
       - ./content-delivery-network:/app
