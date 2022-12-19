@@ -1,11 +1,12 @@
+import { Request, Response, RequestHandler, NextFunction } from "express";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
-import { Request, Response, NextFunction } from "express";
+import { ObjectId } from "mongoose";
 import jwt from "jsonwebtoken";
 
 import { jwtConfig } from "../config/jwt";
 
 export interface AuthToken {
-    userID: number;
+    userID: ObjectId;
 }
 
 export interface AuthRequest extends Request {
@@ -13,7 +14,7 @@ export interface AuthRequest extends Request {
 }
 
 export class AuthMiddleware {
-    authenticate() {
+    authenticate(): RequestHandler {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const token = req

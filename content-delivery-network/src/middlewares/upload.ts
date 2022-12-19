@@ -1,13 +1,13 @@
 import { GridFsStorage } from "multer-gridfs-storage";
 import { v4 as uuidv4 } from "uuid";
-import { Request } from "express";
+import { Request, RequestHandler } from "express";
 import multer from "multer";
 
 import { dataConfig } from "../config/data";
 import { AuthRequest } from "./auth";
 
 export class UploadMiddleware {
-    upload(filename: string) {
+    upload(filename: string): RequestHandler {
         const storage = new GridFsStorage({
             url: `mongodb://${dataConfig.username}:${dataConfig.password}@${dataConfig.host}:${dataConfig.port}/${dataConfig.database}`,
             file: (req: Request, file: Express.Multer.File) => {

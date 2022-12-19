@@ -1,12 +1,12 @@
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
-import { Request, Response } from "express";
+import { Request, Response, RequestHandler } from "express";
 import mongoose from "mongoose";
 
 import { AuthRequest } from "../middlewares/auth";
 import { dataConfig } from "../config/data";
 
 export class ContentController {
-    render() {
+    render(): RequestHandler {
         return async (req: Request, res: Response) => {
             const { db } = mongoose.connection;
             const bucket = new mongoose.mongo.GridFSBucket(db, {
@@ -28,7 +28,7 @@ export class ContentController {
         };
     }
 
-    upload() {
+    upload(): RequestHandler {
         return async (req: Request, res: Response) => {
             const { token } = req as AuthRequest;
             if (!token) {
@@ -52,7 +52,7 @@ export class ContentController {
         };
     }
 
-    remove() {
+    remove(): RequestHandler {
         return async (req: Request, res: Response) => {
             const { token } = req as AuthRequest;
             if (!token) {
